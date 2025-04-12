@@ -1,0 +1,56 @@
+# ==============
+# Gradle
+# ==============
+.gradle/
+**/build/
+gradle-app.setting
+
+# ==============
+# Java
+# ==============
+*.class
+*.jar
+*.war
+*.ear
+
+# Allow just the Gradle wrapper JAR
+!gradle/wrapper/gradle-wrapper.jar
+
+# ==============
+# IntelliJ IDEA
+# ==============
+*.iml
+*.iws
+*.ipr
+.idea/
+
+# ==============
+# Eclipse
+# ==============
+.classpath
+.project
+.settings/
+*.launch
+
+# ==============
+# NetBeans
+# ==============
+nbproject/
+*.nb-gradle.xml
+
+# ==============
+# Visual Studio Code
+# ==============
+.vscode/
+
+# ==============
+# Logs
+# ==============
+*.log
+logs/
+
+# ==============
+# OS-specific files
+# ==============
+.DS_Store
+Thumbs.db
