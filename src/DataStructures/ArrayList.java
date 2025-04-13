@@ -26,27 +26,51 @@ public class ArrayList<T> implements ListADT<T> {
   // Add Methods
   @Override
   public void add(int index, T item) {
-    // --- Skeleton Plan ---
-    // 1. Check for null item; throw IllegalArgumentException if invalid.
-    // 2. Check index bounds (0 <= index <= size); throw IndexOutOfBoundsException
-    // if invalid.
-    // 3. Ensure internal array has capacity... (handle resizing).
-    // 4. Shift elements right...
-    // 5. Place 'item' at buffer[index].
-    // 6. Increment 'size'.
-    throw new UnsupportedOperationException("Skeleton only, not implemented."); // Keep stub exception
+    // --- Implementation based on Step 4 Skeleton ---
+
+    // 1. Check for null item
+    if (item == null) {
+      throw new IllegalArgumentException("Item cannot be null.");
+    }
+
+    // 2. Check index bounds for insertion (0 <= index <= size)
+    if (index < 0 || index > this.size) {
+      throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+    }
+
+    // 3. Ensure capacity for one more element
+    growIfNeeded(); // Use helper implemented previously
+
+    // 4. Make space by shifting elements right (if index < size)
+    if (index < this.size) {
+      shiftRight(index); // Use our shiftRight helper
+    }
+    // If index == size, no shift is needed.
+
+    // 5. Place the new item at the specified index
+    this.buffer[index] = item;
+
+    // 6. Increment the list size
+    this.size++;
   }
 
   @Override
   public void addFirst(T item) {
-    // --- Skeleton Plan ---
-    // 1. Check for null item (throw IllegalArgumentException).
-    // 2. Ensure capacity (logical block `ensureCapacityForAdd`).
-    // 3. Shift *all* existing elements (0 to size-1) one position right (logical
-    // block `shiftRightFromIndex(0)`).
-    // 4. Place item at buffer[0].
-    // 5. Increment size.
-    throw new UnsupportedOperationException("Skeleton only, not implemented."); // Keep stub exception
+    // --- Implementation based on Step 4 Skeleton ---
+    // 1. Check for null item
+    if (item == null) {
+      throw new IllegalArgumentException("Item cannot be null.");
+    }
+    // 2. Ensure capacity
+    growIfNeeded(); // Call helper
+    // 3. Shift *all* existing elements right (if any exist)
+    if (this.size > 0) { // Need to check if size > 0 before shifting index 0..size-1
+      shiftRight(0); // Call helper
+    }
+    // 4. Place item at buffer[0]
+    this.buffer[0] = item;
+    // 5. Increment size
+    this.size++;
   }
 
   @Override
@@ -105,16 +129,30 @@ public class ArrayList<T> implements ListADT<T> {
 
   @Override
   public T remove(int index) {
-    // --- Skeleton Plan ---
-    // 1. Check index bounds (0 <= index < size); throw IndexOutOfBoundsException if
-    // invalid.
-    // 2. Store buffer[index] in a temporary variable (e.g., 'removedItem').
-    // 3. If removing element before the last one (index < size - 1), perform "Shift
-    // Left" helper logic...
-    // 4. Decrement 'size'.
-    // 5. Set buffer[size] (the now-unused last slot) to null.
-    // 6. Return 'removedItem'.
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    // --- Implementation based on Step 4 Skeleton ---
+
+    // 1. Check index bounds (0 <= index < size)
+    if (index < 0 || index >= this.size) {
+      throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+    }
+
+    // 2. Store buffer[index] to return later
+    T removedItem = this.buffer[index];
+
+    // 3. If removing element before the last one (index < size - 1), shift left
+    if (index < this.size - 1) {
+      shiftLeft(index); // Use our new helper
+    }
+    // If removing the last element (index == size - 1), no shifting is needed.
+
+    // 4. Decrement size *before* nulling out the slot
+    this.size--; // List is now logically shorter
+
+    // 5. Set the now-unused last slot to null (helps Garbage Collector)
+    this.buffer[this.size] = null;
+
+    // 6. Return the stored 'removedItem'
+    return removedItem;
   }
 
   @Override
@@ -267,5 +305,46 @@ public class ArrayList<T> implements ListADT<T> {
       // newCapacity);
     }
     // If not full, do nothing.
+  }
+
+  /**
+   * Shifts elements to the right to make space for insertion at a given index.
+   * Elements from buffer[index] through buffer[size-1] are moved
+   * to positions buffer[index+1] through buffer[size].
+   * Assumes capacity is already sufficient and index is valid for insertion.
+   * 
+   * @param index The index at which an element will be inserted (0 <= index <
+   *              size).
+   */
+  private void shiftRight(int index) {
+    // Loop backwards from the last current element down to the insertion index
+    // Example: size=3, index=1. Need to move elements at 1, 2.
+    // i = 2: buffer[3] = buffer[2] (Move C)
+    // i = 1: buffer[2] = buffer[1] (Move B)
+    for (int i = this.size - 1; i >= index; i--) {
+      this.buffer[i + 1] = this.buffer[i];
+    }
+    // The slot at buffer[index] now contains a copy but is ready to be overwritten.
+  }
+
+  /**
+   * Shifts elements to the left to fill the gap after removal at a given index.
+   * Elements from buffer[index+1] through buffer[size-1] are moved
+   * to positions buffer[index] through buffer[size-2].
+   * Assumes index is valid for removal (0 <= index < size).
+   * 
+   * @param index The index from which an element was just removed.
+   */
+  private void shiftLeft(int index) {
+    // Loop from the removal index up to the second-to-last element
+    // Example: size=4, index=1 (removed B). Need to move C, D.
+    // i = 1: buffer[1] = buffer[2] (Move C left)
+    // i = 2: buffer[2] = buffer[3] (Move D left)
+    // Loop condition i < size - 1 (i < 3) stops it correctly.
+    for (int i = index; i < this.size - 1; i++) {
+      this.buffer[i] = this.buffer[i + 1];
+    }
+    // The slot at the old end (size - 1) now contains a duplicate
+    // but will be handled by the calling remove method.
   }
 }
