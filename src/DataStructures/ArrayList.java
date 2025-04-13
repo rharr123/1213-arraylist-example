@@ -26,23 +26,52 @@ public class ArrayList<T> implements ListADT<T> {
   // Add Methods
   @Override
   public void add(int index, T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Plan ---
+    // 1. Check for null item; throw IllegalArgumentException if invalid.
+    // 2. Check index bounds (0 <= index <= size); throw IndexOutOfBoundsException
+    // if invalid.
+    // 3. Ensure internal array has capacity... (handle resizing).
+    // 4. Shift elements right...
+    // 5. Place 'item' at buffer[index].
+    // 6. Increment 'size'.
+    throw new UnsupportedOperationException("Skeleton only, not implemented."); // Keep stub exception
   }
 
   @Override
   public void addFirst(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Plan ---
+    // 1. Check for null item (throw IllegalArgumentException).
+    // 2. Ensure capacity (logical block `ensureCapacityForAdd`).
+    // 3. Shift *all* existing elements (0 to size-1) one position right (logical
+    // block `shiftRightFromIndex(0)`).
+    // 4. Place item at buffer[0].
+    // 5. Increment size.
+    throw new UnsupportedOperationException("Skeleton only, not implemented."); // Keep stub exception
   }
 
   @Override
   public void addLast(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Direct Logic Skeleton ---
+    // 1. Check for null item (throw IllegalArgumentException).
+    // 2. Ensure capacity (logical block `ensureCapacityForAdd`).
+    // 3. Place item at buffer[size] (No shifting required!).
+    // 4. Increment size.
+    throw new UnsupportedOperationException("Skeleton only, not implemented."); // Keep stub exception
   }
 
   @Override
   public boolean addAfter(T existing, T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-    /* return false; */ } // Adjusted stub
+    // --- Skeleton Steps ---
+    // 1. Check for null 'existing' or null 'item' (throw IllegalArgumentException,
+    // as per Javadoc).
+    // 2. Find the index of the 'existing' item...
+    // 3. If 'existing' item was found...
+    // - Plan: Execute the direct logic for adding 'item' at 'foundIndex + 1':...
+    // - Return true (indicating success).
+    // 4. Else ('existing' item was not found...):
+    // - Return false.
+    throw new UnsupportedOperationException("Skeleton only, not implemented."); // Keep stub exception
+  }
 
   // Remove Methods
   @Override
