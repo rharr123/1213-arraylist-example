@@ -51,12 +51,21 @@ public class ArrayList<T> implements ListADT<T> {
 
   @Override
   public void addLast(T item) {
-    // --- Direct Logic Skeleton ---
-    // 1. Check for null item (throw IllegalArgumentException).
-    // 2. Ensure capacity (logical block `ensureCapacityForAdd`).
-    // 3. Place item at buffer[size] (No shifting required!).
-    // 4. Increment size.
-    throw new UnsupportedOperationException("Skeleton only, not implemented."); // Keep stub exception
+    // --- Implementation based on Step 4 Direct Logic Skeleton ---
+
+    // 1. Check for null item (as per Javadoc contract)
+    if (item == null) {
+      throw new IllegalArgumentException("Item cannot be null.");
+    }
+
+    // 2. Ensure internal array has capacity for one more element
+    growIfNeeded(); // Call our private helper method
+
+    // 3. Place item at buffer[size] (the first unused slot)
+    this.buffer[this.size] = item;
+
+    // 4. Increment size
+    this.size++;
   }
 
   @Override
@@ -223,4 +232,40 @@ public class ArrayList<T> implements ListADT<T> {
   }
 
   // No private helpers needed yet
+
+  // --- Private Helper Methods ---
+
+  /**
+   * Ensures that the internal array has space to add at least one more element.
+   * If the array is full, it creates a new, larger array (typically double
+   * the size) and copies the existing elements into it using a loop.
+   */
+  @SuppressWarnings("unchecked") // For the cast when assigning back to buffer
+  private void growIfNeeded() {
+    // Check if the array is full
+    if (this.size == this.buffer.length) {
+      // Determine the new capacity
+      int oldCapacity = this.buffer.length;
+      int newCapacity = (oldCapacity == 0) ? DEFAULT_CAPACITY : oldCapacity * 2;
+
+      // Create the new, larger array (as Object[] due to erasure)
+      Object[] newbuffer = new Object[newCapacity];
+
+      // --- Copy elements using a standard for loop ---
+      // We need to copy 'size' elements, from index 0 to size-1
+      for (int i = 0; i < this.size; i++) {
+        newbuffer[i] = this.buffer[i]; // Copy element at index i
+      }
+      // --- End of copy loop ---
+
+      // Update the buffer reference to point to the new array
+      // This requires the cast, hence the @SuppressWarnings on the method
+      this.buffer = (T[]) newbuffer;
+
+      // Optional: Log or print a message when resizing happens (for debugging)
+      // System.out.println("DEBUG: Resized array from " + oldCapacity + " to " +
+      // newCapacity);
+    }
+    // If not full, do nothing.
+  }
 }
