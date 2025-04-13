@@ -94,37 +94,47 @@ public class ArrayList<T> implements ListADT<T> {
 
   @Override
   public boolean addAfter(T existing, T item) {
-    // --- Skeleton Steps ---
-    // 1. Check for null 'existing' or null 'item' (throw IllegalArgumentException,
-    // as per Javadoc).
-    // 2. Find the index of the 'existing' item...
-    // 3. If 'existing' item was found...
-    // - Plan: Execute the direct logic for adding 'item' at 'foundIndex + 1':...
-    // - Return true (indicating success).
-    // 4. Else ('existing' item was not found...):
-    // - Return false.
-    throw new UnsupportedOperationException("Skeleton only, not implemented."); // Keep stub exception
+    // --- Implementation based on Step 4 Skeleton ---
+    // 1. Check null arguments
+    if (existing == null || item == null) {
+      throw new IllegalArgumentException("Existing item and new item cannot be null.");
+    }
+    // 2. Find index of existing item
+    int foundIndex = indexOf(existing); // Reuse indexOf()
+
+    // 3. If found...
+    if (foundIndex >= 0) {
+      // --- Direct Logic for add(foundIndex + 1, item) --- // Reusing add method is
+      // cleaner
+      add(foundIndex + 1, item);
+      return true;
+    } else {
+      // 5. If not found...
+      return false;
+    }
   }
 
   // Remove Methods
   @Override
   public T removeFirst() {
-    // --- Skeleton Plan ---
-    // 1. Check if list is empty (size == 0).
-    // 2. If empty, throw NoSuchElementException.
-    // 3. If not empty, perform the logic for remove(0): ...
-    // - Return the stored element.
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    // --- Implementation based on Step 4 Skeleton ---
+    // 1. Check if empty
+    if (isEmpty()) {
+      throw new NoSuchElementException("List is empty.");
+    }
+    // 2. Delegate to remove(0) - Simpler than direct logic here
+    return remove(0);
   }
 
   @Override
   public T removeLast() {
-    // --- Skeleton Plan ---
-    // 1. Check if list is empty (size == 0).
-    // 2. If empty, throw NoSuchElementException.
-    // 3. If not empty: ...
-    // - Return the stored element.
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    // --- Implementation based on Step 4 Skeleton ---
+    // 1. Check if empty
+    if (isEmpty()) {
+      throw new NoSuchElementException("List is empty.");
+    }
+    // 2. Delegate to remove(size - 1)
+    return remove(this.size - 1);
   }
 
   @Override
@@ -157,32 +167,42 @@ public class ArrayList<T> implements ListADT<T> {
 
   @Override
   public boolean remove(T item) {
-    // --- Skeleton Steps ---
-    // 1. Find the index of the first occurrence of 'item'...
+    // --- Implementation based on Step 4 Skeleton ---
+    // 1. Find the index of the first occurrence of 'item'.
+    int foundIndex = indexOf(item); // Reuse indexOf()
+
     // 2. Check if the item was found.
-    // - If foundIndex >= 0:
-    // - Plan: Perform the direct logic for removing the element at 'foundIndex':...
-    // - Return true.
-    // - Else (foundIndex == -1):
-    // - Return false.
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    if (foundIndex >= 0) {
+      // --- Delegate to remove(foundIndex) --- // Cleaner
+      remove(foundIndex);
+      return true; // Indicate success
+    } else {
+      // 4. If not found, return false.
+      return false;
+    }
   }
 
   // Accessor/Query Methods
   @Override
   public T first() {
-    // --- Skeleton Plan ---
-    // 1. Check if empty (size == 0); throw NoSuchElementException if true.
+    // --- Implementation based on Step 4 Skeleton ---
+    // 1. Check if empty
+    if (isEmpty()) { // Reuse isEmpty() method
+      throw new NoSuchElementException("List is empty.");
+    }
     // 2. Return buffer[0].
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    return this.buffer[0]; // Direct access ok, or get(0)
   }
 
   @Override
   public T last() {
-    // --- Skeleton Plan ---
-    // 1. Check if empty (size == 0); throw NoSuchElementException if true.
+    // --- Implementation based on Step 4 Skeleton ---
+    // 1. Check if empty
+    if (isEmpty()) { // Reuse isEmpty() method
+      throw new NoSuchElementException("List is empty.");
+    }
     // 2. Return buffer[size - 1].
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    return this.buffer[this.size - 1]; // Direct access ok, or get(size - 1)
   }
 
   @Override
@@ -224,22 +244,33 @@ public class ArrayList<T> implements ListADT<T> {
 
   @Override
   public int indexOf(T item) {
-    // --- Skeleton Plan ---
-    // 1. Plan: Iterate with index 'i' from 0 to size - 1.
-    // 2. Inside loop, compare 'item' with buffer[i] using null-safe equals...
-    // 3. If a match is found, return index 'i' immediately.
-    // 4. If loop finishes without a match, return -1.
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    // --- Implementation based on Step 4 Skeleton ---
+    // 1. Iterate through the list elements with index 'i' from 0 to size - 1.
+    for (int i = 0; i < this.size; i++) {
+      // 2. Inside loop, compare 'item' with buffer[i] using null-safe equals.
+      T currentElement = this.buffer[i];
+      if (item == null) {
+        // If searching for null, find the first null element
+        if (currentElement == null) {
+          return i; // Found null at index i
+        }
+      } else {
+        // If searching for non-null, use item.equals()
+        if (item.equals(currentElement)) {
+          return i; // Found match at index i
+        }
+      }
+    }
+    // 4. If loop finishes without finding a match, return -1.
+    return -1;
   }
 
   @Override
   public boolean contains(T item) {
-    // --- Skeleton Plan (Leveraging indexOf logic) ---
-    // 1. Perform the logic planned for indexOf(item). Let the result be
-    // 'foundIndex'.
-    // 2. Return true if 'foundIndex' is not -1, otherwise return false.
-    // - Return (foundIndex >= 0);
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    // --- Implementation based on Step 4 Skeleton (Leveraging indexOf) ---
+    // 1. Perform the logic for indexOf(item).
+    // 2. Return true if the index found is not -1.
+    return indexOf(item) >= 0;
   }
 
   @Override
@@ -255,18 +286,50 @@ public class ArrayList<T> implements ListADT<T> {
   // Clear Method
   @Override
   public void clear() {
-    // --- Skeleton Steps ---
-    // 1. Optional (for GC): Iterate from 0 to size-1 and set buffer[i] to null.
-    // 2. Reset the size.
-    // - Set size = 0;
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    // --- Implementation based on Step 4 Skeleton ---
+
+    // 1. Optional (Helps GC): Null out references in the array slots
+    // that were actually used (0 to size-1).
+    for (int i = 0; i < this.size; i++) {
+      this.buffer[i] = null;
+    }
+
+    // 2. Reset the size to 0.
+    this.size = 0;
   }
 
   // Helper for toString (can be included in starter)
   public String toDetailedString() {
-    // Basic stub or the full version from final code
-    return "ArrayList[Size=" + size + ", Capacity=" + (buffer != null ? buffer.length : 0)
-        + "] (Implementation Pending)";
+    // Using the full version from final code for better demo
+    final int ELEMENTS_PER_LINE = 8; // Adjust as needed for desired width
+    StringBuilder sb = new StringBuilder();
+
+    // Line 1: Summary
+    sb.append("ArrayList[Size=").append(size);
+    sb.append(", Capacity=").append(buffer.length).append("]\n"); // Add newline
+
+    // Line 2 onwards: Internal array representation
+    sb.append("  Internal: [\n"); // Indent and start array on new line
+    if (buffer.length > 0) {
+      sb.append("    "); // Indent first line of elements
+      for (int i = 0; i < buffer.length; i++) {
+        // Append element
+        sb.append(buffer[i]);
+
+        // Check if it's not the last element
+        if (i < buffer.length - 1) {
+          sb.append(" | "); // Add separator
+
+          // Check if we need to wrap to the next line
+          if ((i + 1) % ELEMENTS_PER_LINE == 0) {
+            sb.append("\n    "); // Newline and indent next line
+          }
+        }
+      }
+    }
+    sb.append("\n  ]"); // Close bracket on a new line, indented
+
+    return sb.toString();
   }
 
   // No private helpers needed yet
