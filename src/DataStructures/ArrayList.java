@@ -76,23 +76,50 @@ public class ArrayList<T> implements ListADT<T> {
   // Remove Methods
   @Override
   public T removeFirst() {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Plan ---
+    // 1. Check if list is empty (size == 0).
+    // 2. If empty, throw NoSuchElementException.
+    // 3. If not empty, perform the logic for remove(0): ...
+    // - Return the stored element.
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
   }
 
   @Override
   public T removeLast() {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Plan ---
+    // 1. Check if list is empty (size == 0).
+    // 2. If empty, throw NoSuchElementException.
+    // 3. If not empty: ...
+    // - Return the stored element.
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
   }
 
   @Override
   public T remove(int index) {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Plan ---
+    // 1. Check index bounds (0 <= index < size); throw IndexOutOfBoundsException if
+    // invalid.
+    // 2. Store buffer[index] in a temporary variable (e.g., 'removedItem').
+    // 3. If removing element before the last one (index < size - 1), perform "Shift
+    // Left" helper logic...
+    // 4. Decrement 'size'.
+    // 5. Set buffer[size] (the now-unused last slot) to null.
+    // 6. Return 'removedItem'.
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
   }
 
   @Override
   public boolean remove(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-    /* return false; */ }
+    // --- Skeleton Steps ---
+    // 1. Find the index of the first occurrence of 'item'...
+    // 2. Check if the item was found.
+    // - If foundIndex >= 0:
+    // - Plan: Perform the direct logic for removing the element at 'foundIndex':...
+    // - Return true.
+    // - Else (foundIndex == -1):
+    // - Return false.
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+  }
 
   // Accessor/Query Methods
   @Override
@@ -138,7 +165,11 @@ public class ArrayList<T> implements ListADT<T> {
   // Clear Method
   @Override
   public void clear() {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Steps ---
+    // 1. Optional (for GC): Iterate from 0 to size-1 and set buffer[i] to null.
+    // 2. Reset the size.
+    // - Set size = 0;
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
   }
 
   // Helper for toString (can be included in starter)
