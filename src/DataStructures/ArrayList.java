@@ -140,23 +140,39 @@ public class ArrayList<T> implements ListADT<T> {
 
   @Override
   public T get(int index) {
-    // --- Skeleton Plan ---
-    // 1. Check index bounds (0 <= index < size); throw IndexOutOfBoundsException if
-    // invalid.
-    // 2. Return buffer[index];
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    // --- Implementation based on Step 4 Skeleton ---
+
+    // 1. Check index bounds (0 <= index < size)
+    if (index < 0 || index >= this.size) {
+      throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+    }
+
+    // 2. Return buffer[index]
+    return this.buffer[index];
   }
 
   @Override
   public T set(int index, T item) {
-    // --- Skeleton Plan ---
-    // 1. Check for null item; throw IllegalArgumentException if invalid.
-    // 2. Check index bounds (0 <= index < size); throw IndexOutOfBoundsException if
-    // invalid.
-    // 3. Store current buffer[index] in a temporary variable ('oldItem').
-    // 4. Update the array: buffer[index] = item;
-    // 5. Return 'oldItem'.
-    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+    // --- Implementation based on Step 4 Skeleton ---
+
+    // 1. Check for null item (as per Javadoc contract)
+    if (item == null) {
+      throw new IllegalArgumentException("Item cannot be null.");
+    }
+
+    // 2. Check index bounds (0 <= index < size)
+    if (index < 0 || index >= this.size) {
+      throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+    }
+
+    // 3. Store current buffer[index]
+    T oldItem = this.buffer[index];
+
+    // 4. Update the array
+    this.buffer[index] = item;
+
+    // 5. Return 'oldItem'
+    return oldItem;
   }
 
   @Override
