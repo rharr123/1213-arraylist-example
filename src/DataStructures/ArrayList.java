@@ -124,33 +124,60 @@ public class ArrayList<T> implements ListADT<T> {
   // Accessor/Query Methods
   @Override
   public T first() {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Plan ---
+    // 1. Check if empty (size == 0); throw NoSuchElementException if true.
+    // 2. Return buffer[0].
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
   }
 
   @Override
   public T last() {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Plan ---
+    // 1. Check if empty (size == 0); throw NoSuchElementException if true.
+    // 2. Return buffer[size - 1].
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
   }
 
   @Override
   public T get(int index) {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Plan ---
+    // 1. Check index bounds (0 <= index < size); throw IndexOutOfBoundsException if
+    // invalid.
+    // 2. Return buffer[index];
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
   }
 
   @Override
   public T set(int index, T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    // --- Skeleton Plan ---
+    // 1. Check for null item; throw IllegalArgumentException if invalid.
+    // 2. Check index bounds (0 <= index < size); throw IndexOutOfBoundsException if
+    // invalid.
+    // 3. Store current buffer[index] in a temporary variable ('oldItem').
+    // 4. Update the array: buffer[index] = item;
+    // 5. Return 'oldItem'.
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
   }
 
   @Override
   public int indexOf(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-    /* return -1; */ }
+    // --- Skeleton Plan ---
+    // 1. Plan: Iterate with index 'i' from 0 to size - 1.
+    // 2. Inside loop, compare 'item' with buffer[i] using null-safe equals...
+    // 3. If a match is found, return index 'i' immediately.
+    // 4. If loop finishes without a match, return -1.
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+  }
 
   @Override
   public boolean contains(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-    /* return false; */ }
+    // --- Skeleton Plan (Leveraging indexOf logic) ---
+    // 1. Perform the logic planned for indexOf(item). Let the result be
+    // 'foundIndex'.
+    // 2. Return true if 'foundIndex' is not -1, otherwise return false.
+    // - Return (foundIndex >= 0);
+    throw new UnsupportedOperationException("Skeleton only, not implemented.");
+  }
 
   @Override
   public boolean isEmpty() {
