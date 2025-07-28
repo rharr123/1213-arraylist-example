@@ -1,123 +1,164 @@
 package DataStructures;
 
-import ADTs.ListADT; // Assumes ListADT extends CollectionADT
+import ADTs.ListADT;
 import java.util.NoSuchElementException;
-// Other exceptions (IndexOutOfBounds, IllegalArgument) are in java.lang
+import java.util.Objects;
+import java.util.Arrays;
 
-/**
- * Starter skeleton for ArrayList implementation.
- * Contains only the basic structure, fields, constructor, and method stubs.
- * 
- * @param <T> the type of elements held in this list
- */
 public class ArrayList<T> implements ListADT<T> {
+    private static final int DEFAULT_CAPACITY = 10;
+    private T[] buffer;
+    private int size;
 
-  private static final int DEFAULT_CAPACITY = 10;
-  private T[] buffer;
-  private int size;
+    @SuppressWarnings("unchecked")
+    public ArrayList() {
+        this.buffer = (T[]) new Object[DEFAULT_CAPACITY];
+        this.size = 0;
+    }
 
-  @SuppressWarnings("unchecked")
-  public ArrayList() {
-    this.buffer = (T[]) new Object[DEFAULT_CAPACITY];
-    this.size = 0;
-  }
+    // ---------------------------
+    // Private Helper: grow buffer
+    // ---------------------------
+    @SuppressWarnings("unchecked")
+    private void growIfNeeded() {
+        if (this.size == this.buffer.length) {
+            int newCapacity = (this.buffer.length == 0) ? DEFAULT_CAPACITY : this.buffer.length * 2;
+            T[] newBuffer = (T[]) new Object[newCapacity];
+            System.arraycopy(this.buffer, 0, newBuffer, 0, this.size);
+            this.buffer = newBuffer;
+        }
+    }
 
-  // --- Stubs for ALL ListADT/CollectionADT methods ---
-  // Add Methods
-  @Override
-  public void add(int index, T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    // -------------------
+    // Add Methods
+    // -------------------
+    @Override
+    public void addLast(T item) {
+        if (item == null) throw new IllegalArgumentException();
+        growIfNeeded();
+        this.buffer[this.size++] = item;
+    }
 
-  @Override
-  public void addFirst(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    @Override
+    public void addFirst(T item) {
+        add(0, item);
+    }
 
-  @Override
-  public void addLast(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    @Override
+    public void add(int index, T item) {
+        if (item == null) throw new IllegalArgumentException();
+        if (index < 0 || index > this.size) throw new IndexOutOfBoundsException();
+        growIfNeeded();
+        System.arraycopy(this.buffer, index, this.buffer, index + 1, this.size - index);
+        this.buffer[index] = item;
+        this.size++;
+    }
 
-  @Override
-  public boolean addAfter(T existing, T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-    /* return false; */ } // Adjusted stub
+    @Override
+    public boolean addAfter(T existing, T item) {
+        if (existing == null || item == null) throw new IllegalArgumentException();
+        int i = indexOf(existing);
+        if (i == -1) return false;
+        add(i + 1, item);
+        return true;
+    }
 
-  // Remove Methods
-  @Override
-  public T removeFirst() {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    // -------------------
+    // Remove Methods
+    // -------------------
+    @Override
+    public T removeFirst() {
+        if (isEmpty()) throw new NoSuchElementException();
+        return remove(0);
+    }
 
-  @Override
-  public T removeLast() {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    @Override
+    public T removeLast() {
+        if (isEmpty()) throw new NoSuchElementException();
+        return remove(this.size - 1);
+    }
 
-  @Override
-  public T remove(int index) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    @Override
+    public T remove(int index) {
+        if (index < 0 || index >= this.size) throw new IndexOutOfBoundsException();
+        T removed = this.buffer[index];
+        int numMoved = this.size - index - 1;
+        if (numMoved > 0) {
+            System.arraycopy(this.buffer, index + 1, this.buffer, index, numMoved);
+        }
+        this.buffer[--this.size] = null;
+        return removed;
+    }
 
-  @Override
-  public boolean remove(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-    /* return false; */ }
+    @Override
+    public boolean remove(T item) {
+        int i = indexOf(item);
+        if (i == -1) return false;
+        remove(i);
+        return true;
+    }
 
-  // Accessor/Query Methods
-  @Override
-  public T first() {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    // -------------------
+    // Accessors & Queries
+    // -------------------
+    @Override
+    public T get(int index) {
+        if (index < 0 || index >= this.size) throw new IndexOutOfBoundsException();
+        return this.buffer[index];
+    }
 
-  @Override
-  public T last() {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    @Override
+    public T set(int index, T item) {
+        if (item == null) throw new IllegalArgumentException();
+        if (index < 0 || index >= this.size) throw new IndexOutOfBoundsException();
+        T old = this.buffer[index];
+        this.buffer[index] = item;
+        return old;
+    }
 
-  @Override
-  public T get(int index) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    @Override
+    public T first() {
+        if (isEmpty()) throw new NoSuchElementException();
+        return get(0);
+    }
 
-  @Override
-  public T set(int index, T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    @Override
+    public T last() {
+        if (isEmpty()) throw new NoSuchElementException();
+        return get(this.size - 1);
+    }
 
-  @Override
-  public int indexOf(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-    /* return -1; */ }
+    @Override
+    public int indexOf(T item) {
+        for (int i = 0; i < this.size; i++) {
+            if (Objects.equals(item, this.buffer[i])) return i;
+        }
+        return -1;
+    }
 
-  @Override
-  public boolean contains(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-    /* return false; */ }
+    @Override
+    public boolean contains(T item) {
+        return indexOf(item) != -1;
+    }
 
-  @Override
-  public boolean isEmpty() {
-    return this.size == 0;
-  } // Implemented
+    @Override
+    public boolean isEmpty() {
+        return this.size == 0;
+    }
 
-  @Override
-  public int size() {
-    return this.size;
-  } // Implemented
+    @Override
+    public int size() {
+        return this.size;
+    }
 
-  // Clear Method
-  @Override
-  public void clear() {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
+    @Override
+    public void clear() {
+        Arrays.fill(this.buffer, 0, this.size, null);
+        this.size = 0;
+    }
 
-  // Helper for toString (can be included in starter)
-  public String toDetailedString() {
-    // Basic stub or the full version from final code
-    return "ArrayList[Size=" + size + ", Capacity=" + (buffer != null ? buffer.length : 0)
-        + "] (Implementation Pending)";
-  }
-
-  // No private helpers needed yet
+    // Optional: Detailed state for debugging
+    public String toDetailedString() {
+        return "ArrayList[Size=" + size + ", Capacity=" + (buffer != null ? buffer.length : 0) + "] " + Arrays.toString(Arrays.copyOf(buffer, size));
+    }
 }
